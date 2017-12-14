@@ -39,8 +39,13 @@ case $ANSWER in
         cd $DIR
         vagrant up
 
-        ####### アプリケーション構築 composer
-
+        ####### アプリケーション構築準備
+        #        cp -f init.sh ../www/
+        #        cp -f 50x.html ../www/
+        echo "仮想環境にSSH接続し、composerによる環境構築を行って下さい。"
+        echo "例）"
+        echo "> cd /usr/share/nginx/html/ "
+        echo "> ./init.sh"
 
       * )
           exit_sh 9
