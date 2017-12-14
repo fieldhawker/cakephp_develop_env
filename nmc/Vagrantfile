@@ -1,0 +1,27 @@
+Vagrant.configure(2) do |config|
+
+  #### プラグインの設定
+  if Vagrant.has_plugin?("vagrant-vbguest")
+    config.vbguest.auto_update = false
+    config.vbguest.no_remote = true
+  end
+  if Vagrant.has_plugin?("vagrant-cachier")
+    config.cache.scope = :box
+  end
+
+  #### サーバ設定
+  config.vm.box = "CentOS7"
+  config.vm.network "private_network", ip: "192.168.33.10"
+
+  config.vm.provision "ansible_local" do |ansible|
+
+    ansible.playbook = "provisioning/nginx_mariadb_plyabook.yml"
+    ansible.install        = true
+    ansible.inventory_path = "provisioning/hosts"
+    ansible.limit          = "all"
+
+  end
+
+  config.vm.synced_folder "../www", "/usr/share/nginx/html", owner: "vagrant", group: "vagrant", mount_options: ['dmode=777','fmode=755']
+
+end

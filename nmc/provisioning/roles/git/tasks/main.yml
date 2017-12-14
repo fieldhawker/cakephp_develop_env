@@ -1,0 +1,29 @@
+- vars_prompt:
+    -  name: "user_name"
+       prompt: "Please Enter Your ID of Github"
+       private: no
+    -  name: "password"
+       prompt: "Please Enter Your Password of Github"
+       private: yes
+    -  name: "version"
+       prompt: "Please Enter the Version of Products If You have Specified"
+       private: no
+       default: "master"
+
+- name: ディレクトリがなければ作成
+  file:
+    path={{ git_dirpath }}
+    state=directory
+    owner=root
+    group=root
+  become: yes
+  tags:
+    - git
+- name: git_clone
+  git:
+    repo: "http://{{ user_name }}:{{ password }}@github.com/{{ repo_name }}.git"
+    dest: "{{ git_dirpath }}/{{ repo_name  }}"
+    version: "{{ version }}"
+  become: yes
+  tags:
+    - git

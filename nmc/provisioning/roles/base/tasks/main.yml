@@ -1,0 +1,31 @@
+---
+- name: Setting timezone
+  command: timedatectl set-timezone {{ base_timezone }}
+
+- name: set locale
+  lineinfile: >
+    dest=/etc/yum/pluginconf.d/fastestmirror.conf
+    line='include_only=.jp'
+
+- name: set prefer
+  lineinfile: >
+    dest=/etc/yum/pluginconf.d/fastestmirror.conf
+    line='prefer=ftp.iij.ad.jp'
+
+- name: Install app
+  yum: name={{ item }} state=present
+  with_items:
+    - vim
+    - git
+    - ntp
+    - wget
+    - MySQL-python
+
+- name: Start ntpd and enable auto start.
+  service: name=ntpd state=started enabled=yes
+
+- name: Install libselinux-python
+  yum: name=libselinux-python state=present
+
+- name: Permissive selinux
+  selinux: policy=targeted state=permissive
