@@ -1,8 +1,13 @@
 @echo off
 cd /d %~dp0
 
-vagrant provision
+rem --------
+rem -------- vagrant provision 実行
+rem --------
 
+echo vagrant provision 実行
 echo 仮想マシンは起動したままプロビジョニングのみ再度実行
 
-pause >nul
+vagrant provision
+
+echo vagrant provisionが完了しました。

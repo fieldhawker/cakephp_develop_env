@@ -29,3 +29,16 @@
 
 - name: Permissive selinux
   selinux: policy=targeted state=permissive
+
+- name: Disable yum-fastestmirror
+  tags:
+    - install
+    - yum
+  lineinfile: >
+    dest="/etc/yum/pluginconf.d/fastestmirror.conf"
+    line="enabled=0"
+    state=present
+    regexp="^#?enabled="
+    insertafter=EOF
+    create=yes
+    owner=root group=root mode=0644

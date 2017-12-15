@@ -4,7 +4,8 @@ cd /d %~dp0
 echo 開発環境の構築を開始しますか？ [Y/N]
 echo ※エラーが出ても泣かないこと。
 
-
+rem 計測開始
+call worktime.bat START
 
 choice /n
 
@@ -31,31 +32,42 @@ echo 開発環境の構築を開始しませんでした。
 pause >nul
 exit
 
+:SuccessOrDie
+if not %errorlevel% == 0 (
+    echo [ERROR] :P
+    exit 1
+)
+exit /b 0
+
 rem --------
 rem -------- A環境選択時
 rem --------
 :nmc
 echo you selected CentOS7, nginx , MariaDB, cakephp.
 set DIR=nmc
+cd %DIR%
+
 goto :make
 
 
 rem --------
-rem -------- vagrantプラグイン導入
+rem -------- vagrant
 rem --------
 :make
-echo vagrantプラグイン導入
 
-vagrant plugin install vagrant-vbguest
-vagrant vbguest --status
+rem call vagrant_add.bat
+rem call :SuccessOrDie
+rem call vagrant_plugin.bat
+rem call :SuccessOrDie
+rem call vagrant_up.bat
+rem call :SuccessOrDie
 
-vagrant plugin install vagrant-cachier
+cd ../
+rem 計測終了
+call worktime.bat STOP
 
-echo vagrant 起動
-cd %DIR%
-vagrant up
+rem 表示
+call worktime.bat PRINT
 
-
-
-echo 処理が完了しました。
+echo 開発環境の構築が完了しました。
 pause >nul

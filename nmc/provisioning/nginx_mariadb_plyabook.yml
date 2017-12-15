@@ -5,7 +5,6 @@
   user: vagrant
   roles:
     - base
-    - git
     - nginx
     - php
 #    - apache

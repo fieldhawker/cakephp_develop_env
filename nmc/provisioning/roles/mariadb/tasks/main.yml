@@ -70,12 +70,6 @@
   tags:
     - mariadb
 
-- name: リストア
-  mysql_db: name={{ item }} target=roles/mariadb/files/m_user.sql state=import
-  with_items: "{{ mysql_db_name }}"
-  tags:
-    - mariadb
-
 - name: restart MariaDB
   command: systemctl restart mariadb.service
   tags:
