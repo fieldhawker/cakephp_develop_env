@@ -47,21 +47,13 @@
   tags:
     - mariadb
 
-- name: データベース market を作成
+- name: データベース market, market_test を作成
   mysql_db:
-    name: "{{ mysql_db_name }}"
+    name: "{{ item }}"
     login_user: root
     login_password: "{{ mysql_root_password }}"
     state: present
-  tags:
-    - mariadb
-
-- name: テスト用データベース market_test を作成
-  mysql_db:
-    name: "{{ mysql_db_name }}_test"
-    login_user: root
-    login_password: "{{ mysql_root_password }}"
-    state: present
+  with_items: "{{ mysql_db_name }}"
   tags:
     - mariadb
 
@@ -69,11 +61,18 @@
   mysql_user:
     name: "{{ mysql_db_user }}"
     password: "{{ mysql_db_password }}"
-    priv: "{{ mysql_db_name }}.*:ALL / {{ mysql_db_name }}_test.*:ALL"
+    priv: "{{ item }}.*:ALL"
     host: localhost
     login_user: root
     login_password: "{{ mysql_root_password }}"
     state: present
+  with_items: "{{ mysql_db_name }}"
+  tags:
+    - mariadb
+
+- name: リストア
+  mysql_db: name={{ item }} target=roles/mariadb/files/m_user.sql state=import
+  with_items: "{{ mysql_db_name }}"
   tags:
     - mariadb
 

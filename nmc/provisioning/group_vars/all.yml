@@ -2,6 +2,9 @@
 ---
 mysql_root_password: 'pass'
 
-mysql_db_name: 'market'
 mysql_db_user: 'market'
 mysql_db_password: 'maria'
+
+mysql_db_name:
+  - market
+  - market_test
